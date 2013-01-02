@@ -19,17 +19,19 @@
 
     IMPLICIT NONE
     INTEGER :: i, N_end, N_first, N_end_old, count, count_old
+    CHARACTER(LEN=1) :: again
     DOUBLE PRECISION :: err, err_old, y, x, answer, answer_old, taylo, wanted_error
     !****************************************************************************
-    WRITE(*,*), 'PROGRAMMER: LAPSUS'
+4    WRITE(*,*), 'PROGRAMMER: LAPSUS'
     WRITE(*,*)
     WRITE(*,*), 'What is the number you want the Log and Sqrt of,'
     WRITE(*,*), 'the maximum number of iterations,'
-    WRITE(*,*), 'and the error wanted:'
+    WRITE(*,*), 'and the error wanted (a positive intiger representing the negative power):'
     WRITE(*,*), '(each input separated by ENTER)'
     WRITE(*,*)
     READ(*,*), y, N_end, wanted_error
     WRITE(*,*)
+    wanted_error = 10**(-wanted_error)
     answer = 0
     err =1
     !y = 19
@@ -58,8 +60,21 @@
         WRITE(*,*), EXP(.5*-answer)
         WRITE(*,*), err
         WRITE(*,*), i
-        PAUSE
+5        WRITE(*,*)
+        WRITE(*,*), 'Would you like to calculate a diferent number, (Y)es or (N)o:'
+        READ(*,*), again
+        IF (again.EQ.'Y' .OR. again.EQ.'y') THEN
+            WRITE(*,*)
+        GO TO 4
+    ELSEIF (again.EQ.'N' .OR. again.EQ.'n') THEN
+        
         STOP
+    ELSEIF ((again.NE.'Y') .OR. (again.NE.'N') .OR. again.EQ.'n' .OR. again.EQ.'y') THEN
+        WRITE(*,*)
+        WRITE(*,*), 'Error, incorrect Selection, Select Again:'
+        
+        GO TO 5
+        ENDIF
     ELSEIF ((i.EQ.N_end) .AND. (ABS(err_old-err).GT.wanted_error)) THEN
         count_old = count
         count = count + 1
